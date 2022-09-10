@@ -38,3 +38,11 @@ docker run -v $PWD/grpcpp/examples/hw:/src crnt/grpcpp
 The above should print `Hello, World!`, between `=== RUN ===` and `=== DONE ===`, towards the end of terminal output.
 
 You can also pass `-v $PWD/build:/build`. This would cache build results on the host machine. This might come in handy if frequent rebuilds are part of your routine.
+
+For a true gRPC example, let's run a test first:
+
+```
+docker run -v $PWD/examples/test_add:/src -t crnt/grpcpp
+```
+
+Don't forget `-t`, otherwise the terminal output of the test itself would not be green.
