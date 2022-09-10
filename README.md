@@ -39,10 +39,28 @@ The above should print `Hello, World!`, between `=== RUN ===` and `=== DONE ===`
 
 You can also pass `-v $PWD/build:/build`. This would cache build results on the host machine. This might come in handy if frequent rebuilds are part of your routine.
 
-For a true gRPC example, let's run a test first:
+For a loopback gRPC example, let's run a test first:
 
 ```
-docker run -v $PWD/examples/test_add:/src -t crnt/grpcpp
+docker run -v $PWD/grpcpp/examples/test_add:/src -t crnt/grpcpp
 ```
 
-Don't forget `-t`, otherwise the terminal output of the test itself would not be green.
+Don't forget `-t`, otherwise the terminal output of the test itself would not be green. In fact, prefer `-it`, as this allows to `Ctrl+C` the running container, because otherwise you'd need to use `docker stop` to do so.
+
+For a true gRPC example, there's `examples/service_mul`.
+
+In one terminal, run:
+
+```
+docker run -p 5001:5001 -v $PWD/grpcpp/examples/service_mul:/src -it crnt/grpcpp --server 5001
+```
+
+This will start a server listening on port 5001. This post needs to be exposed from Docker, hence `-p 5001:5001`.
+
+In another terminal, run:
+
+```
+docker run -v $PWD/grpcpp/examples/service_mul:/src -it crnt/grpcpp --client 172.17.0.1:5001
+```
+
+This command assumes `172.17.0.1` is the IP address used to access the host machine from the container. This also assumes the container can access local ports of the host machine with no further magic. TODO(dkorolev): Confirm these are true on macOS, and/or make it cleaner, perhaps by amending to `/etc/hosts` inside the container from `entrypoint.sh`.
