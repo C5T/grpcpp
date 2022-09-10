@@ -39,13 +39,13 @@ export GRPC_PLAYGROUND_RELEASE_BUILD_DIR=/build
 
 echo -e '\033[1m\033[36m=== CONFIGURE ===\033[0m'
 echo
-make --always-make /build/.configure_succeeded
+make --always-make /build/.configure_succeeded || exit 1
 
 echo
 echo -e '\033[1m\033[36m=== BUILD ===\033[0m'
 echo
 
-make release
+make release || exit 1
 
 echo
 echo -e '\033[1m\033[36m=== RUN ===\033[0m'
