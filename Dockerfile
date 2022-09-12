@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update
-RUN apt-get install -y build-essential git cmake ninja-build
+RUN apt-get install -y build-essential git cmake ninja-build gnuplot graphviz
 
 # Install `grpc` into this system, as per https://grpc.io/docs/languages/cpp/quickstart/
 RUN git clone --depth 1 --recursive --shallow-submodules -b v1.48.1 https://github.com/grpc/grpc.git grpc_src
