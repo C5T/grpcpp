@@ -1,11 +1,11 @@
 #include <thread>
 
 #include "grpcpp/grpcpp.h"
-#include "bricks/dflags/dflags.h"
+#include "current/bricks/dflags/dflags.h"
 #include "service_mul.grpc.pb.h"
 
-DEFINE_uint16(server, 0, "If set, starts the service on this port.");
-DEFINE_string(client, "", "If set, connects to the service running on this port.");
+DEFINE_uint16(server, 0, "If set, starts the service on this port, ex. `--server 5001`.");
+DEFINE_string(client, "", "If set, connects to the service running on this port, ex. `--client 172.17.0.1:5001`.");
 DEFINE_int32(a, 3, "A number to multiply.");
 DEFINE_int32(b, 5, "Another number to multiply.");
 
@@ -33,12 +33,8 @@ int main(int argc, char** argv) {
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
 
     std::cout << "The service is up. Ctrl+C to cancel." << std::endl;
-    while (true) {
-      std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-  }
-
-  if (!FLAGS_client.empty()) {
+    server->Wait();
+  } else if (!FLAGS_client.empty()) {
     std::cout
         << "Connecting to `" << FLAGS_client << "` to multiply "
         << FLAGS_a << " by " << FLAGS_b << '.' << std::endl;
@@ -63,5 +59,8 @@ int main(int argc, char** argv) {
     } else {
       std::cout << "Result: status not OK." << std::endl;
     }
+  } else {
+    std::cout << "Please set entier `--server` or `--client`." << std::endl;
+    return -1;
   }
 }
