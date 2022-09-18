@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "bricks/dflags/dflags.h"
+#include "current/bricks/dflags/dflags.h"
 
 DEFINE_int32(a, 2, "The `A` in `A+B`.");
 DEFINE_int32(b, 2, "The `B` in `A+B`.");
