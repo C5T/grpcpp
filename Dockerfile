@@ -18,4 +18,6 @@ RUN git clone --depth 1 -b stable_2022_04_10 https://github.com/c5t/current
 COPY CMakeLists.txt /
 COPY Makefile /
 COPY entrypoint.sh /
+COPY lib/grpc_perftest.h /current/utils/
+COPY lib/grpc_perftest_main.h /current/utils/
 ENTRYPOINT ["/entrypoint.sh"]

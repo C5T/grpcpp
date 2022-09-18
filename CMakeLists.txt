@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Threads REQUIRED)
 
 set(current_SOURCE_DIR "${CMAKE_SOURCE_DIR}/../current")
-include_directories(${current_SOURCE_DIR})
+include_directories("${current_SOURCE_DIR}/..")
 
 set(protobuf_MODULE_COMPATIBLE TRUE)
 find_package(Protobuf CONFIG REQUIRED)
@@ -47,6 +47,8 @@ endforeach()
 
 add_library(schema_deps ${GRPC_PROTO_DEPS})
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
+include_directories("/grpcpp_lib")
 
 target_link_libraries(schema_deps ${GRPCPP} ${GRPCPP_REFLECTION} ${LIBPROTOBUF})
 
