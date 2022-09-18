@@ -1,6 +1,6 @@
-#include "3rdparty/gtest/gtest-main-with-dflags.h"
+#include "current/3rdparty/gtest/gtest-main-with-dflags.h"
+#include "current/bricks/dflags/dflags.h"
 #include "grpcpp/grpcpp.h"
-#include "bricks/dflags/dflags.h"
 #include "add.grpc.pb.h"
 
 DEFINE_uint16(port, 5001, "The port to use.");
