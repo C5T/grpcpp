@@ -64,3 +64,11 @@ docker run -v $PWD/grpcpp/examples/service_mul:/src -it crnt/grpcpp --client 172
 ```
 
 This command assumes `172.17.0.1` is the IP address used to access the host machine from the container. This also assumes the container can access local ports of the host machine with no further magic. TODO(dkorolev): Confirm these are true on macOS, and/or make it cleaner, perhaps by amending to `/etc/hosts` inside the container from `entrypoint.sh`.
+
+## Shortcut
+
+On Linux, consider addding `alias grpcpp=/path/to/grpcpp/grpcpp.sh` into your `.bashrc`.
+
+This would make it simple to run `grpcpp some_dir --optional --flag_value=42` to run `grpcpp` on `some_dir` under `$PWD`.
+
+The script would use `.build_some_dir` as the build directory, created and owned by the right user. So, a) no problems cleaning up after the container, and b) build results are cached, so the 2nd and consecutive runs would be instant, and/or requiring only minimum rebuilds.
