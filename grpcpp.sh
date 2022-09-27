@@ -10,4 +10,4 @@ fi
 BUILD="$PWD/.build_$SRC"
 mkdir -p "$BUILD"
 shift
-docker run --network host -u $(id -u):$(id -g) -v $PWD/$SRC:/src -v "$BUILD":/build -it crnt/grpcpp $*
+docker run --network host -u $(id -u):$(id -g) -v "$PWD/$SRC":/src -v "$BUILD":/build -it crnt/grpcpp $*
