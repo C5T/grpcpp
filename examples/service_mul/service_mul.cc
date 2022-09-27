@@ -5,7 +5,7 @@
 #include "service_mul.grpc.pb.h"
 
 DEFINE_uint16(server, 0, "If set, starts the service on this port, ex. `--server 5001`.");
-DEFINE_string(client, "", "If set, connects to the service running on this port, ex. `--client 172.17.0.1:5001`.");
+DEFINE_string(client, "", "If set, connects to the service running on this port, ex. `--client localhost:5001`.");
 DEFINE_int32(a, 3, "A number to multiply.");
 DEFINE_int32(b, 5, "Another number to multiply.");
 

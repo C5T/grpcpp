@@ -52,18 +52,14 @@ For a true gRPC example, there's `examples/service_mul`.
 In one terminal, run:
 
 ```
-docker run -p 5001:5001 -v $PWD/grpcpp/examples/service_mul:/src -it crnt/grpcpp --server 5001
+docker run --network host -v $PWD/grpcpp/examples/service_mul:/src -it crnt/grpcpp --server 5001
 ```
-
-This will start a server listening on port 5001. This post needs to be exposed from Docker, hence `-p 5001:5001`.
 
 In another terminal, run:
 
 ```
-docker run -v $PWD/grpcpp/examples/service_mul:/src -it crnt/grpcpp --client 172.17.0.1:5001
+docker run --network host -v $PWD/grpcpp/examples/service_mul:/src -it crnt/grpcpp --client localhost:5001
 ```
-
-This command assumes `172.17.0.1` is the IP address used to access the host machine from the container. This also assumes the container can access local ports of the host machine with no further magic. TODO(dkorolev): Confirm these are true on macOS, and/or make it cleaner, perhaps by amending to `/etc/hosts` inside the container from `entrypoint.sh`.
 
 ## Shortcut
 
@@ -72,3 +68,10 @@ On Linux, consider addding `alias grpcpp=/path/to/grpcpp/grpcpp.sh` into your `.
 This would make it simple to run `grpcpp some_dir --optional --flag_value=42` to run `grpcpp` on `some_dir` under `$PWD`.
 
 The script would use `.build_some_dir` as the build directory, created and owned by the right user. So, a) no problems cleaning up after the container, and b) build results are cached, so the 2nd and consecutive runs would be instant, and/or requiring only minimum rebuilds.
+
+With this shortcut, the `service_mul` example is just:
+
+```
+grpcpp examples/service_mul --server 5001            # In one terminal.
+grpcpp examples/service_mul --client localhost:5001  # In another terminal.
+```
