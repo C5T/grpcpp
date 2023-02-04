@@ -29,7 +29,7 @@ echo -e '\033[1m\033[35m=== WAITING ===\033[0m'
 echo
 
 STATUS=waiting
-for i in $(seq 30) ; do 
+for i in $(seq 3000) ; do
   RESULT=$(curl localhost:5556 2>/dev/null)
   if [ "$RESULT" == "OK" ] ; then
     STATUS=up
