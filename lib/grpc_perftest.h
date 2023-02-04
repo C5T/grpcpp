@@ -323,11 +323,11 @@ void RunTest(std::string const& server_path, TestConfig const config = TestConfi
     PrintErrorCodesHistogramIfExists();
 
     if (total_errors) {
-      std::cout << "Has gRPC errors: " << total_errors << " of " << total_requests << std::endl;
+      std::cout << "  Has gRPC errors: " << total_errors << " of " << total_requests << std::endl;
     }
 
     if (total_fail) {
-      std::cout << "Has test errors: " << total_fail << " of " << (total_pass + total_fail) << std::endl;
+      std::cout << "  Has test errors: " << total_fail << " of " << (total_pass + total_fail) << std::endl;
     }
   }
 }
