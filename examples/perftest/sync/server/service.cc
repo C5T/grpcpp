@@ -1,4 +1,5 @@
 #include <atomic>
+#include <csignal>
 
 #include "grpcpp/grpcpp.h"
 #include "current/bricks/dflags/dflags.h"
@@ -20,7 +21,14 @@ struct ServiceImpl final : sync_service::RPC::Service {
   }
 };
 
+void HandleSignal(int code) {
+  std::cerr << "\nReceived signal " << code << ", terminating.\n";
+  std::exit(code);
+}
+
 int main(int argc, char** argv) {
+  signal(SIGINT, HandleSignal);
+
   ParseDFlags(&argc, &argv);
 
 #ifndef NDEBUG
