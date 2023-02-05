@@ -1,0 +1,16 @@
+FROM crnt/grpcpp AS build
+
+RUN mkdir /src
+COPY server /src
+COPY proto /src
+
+ENV GRPCPP_ONLY_BUILD=true
+RUN /entrypoint.sh
+
+FROM ubuntu:latest
+
+RUN apt-get update
+RUN apt-get install -y curl
+COPY --from=build /build_release/___binary___ /server
+HEALTHCHECK --interval=1s --timeout=1s --retries=10 --start-period=3s CMD curl localhost:5556
+ENTRYPOINT ["/server", "--http_server=5556"]

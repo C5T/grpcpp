@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  sync_server:
+    container_name: grpcpp_sync_server
+    build:
+      dockerfile: DockerfileServer
+  sync_perftest:
+    container_name: grpcpp_sync_perftest
+    build:
+      dockerfile: DockerfilePerftest
+    depends_on:
+      sync_server:
+        condition: service_healthy

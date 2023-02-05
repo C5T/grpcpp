@@ -1,0 +1,13 @@
+FROM crnt/grpcpp AS build
+
+RUN mkdir /src
+COPY perftest /src
+COPY proto /src
+
+ENV GRPCPP_ONLY_BUILD=true
+RUN /entrypoint.sh
+
+FROM ubuntu:latest
+
+COPY --from=build /build_release/___binary___ /perftest
+ENTRYPOINT ["/perftest", "--intervals=1", "--grpc_server=sync_server:5555", "--kill_url=sync_server:5556/kill"]
