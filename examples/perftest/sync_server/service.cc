@@ -23,6 +23,10 @@ struct ServiceImpl final : sync_service::RPC::Service {
 int main(int argc, char** argv) {
   ParseDFlags(&argc, &argv);
 
+#ifndef NDEBUG
+  std::cout << "Running a DEBUG build!" << std::endl;
+#endif
+
   std::cout << "Starting `sync_service` on gRPC port " << FLAGS_server << std::endl;
 
   ServiceImpl service;

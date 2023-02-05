@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# NOTE(dkorolev): This script should be run from the top-level directory of the `grpcpp` repo.
+
 echo -e '\033[1m\033[34m=== SERVER ===\033[0m'
 echo
 
 echo -ne '\033[1mStarting the server:\033[0m '
-SERVER_CONTAINER_ID=$(GRPCPP_MODE=daemon ./grpcpp.sh examples/perftest/sync_server --http_server 5556)
+SERVER_CONTAINER_ID=$(GRPCPP_MODE=daemon ./grpcpp.sh examples/perftest/sync_server examples/perftest/proto --http_server 5556)
 
 echo $SERVER_CONTAINER_ID
 
@@ -45,7 +47,7 @@ fi
 echo "The server is up."
 echo
 
-./grpcpp.sh examples/perftest/sync_perftest --intervals 1
+./grpcpp.sh examples/perftest/sync_perftest examples/perftest/proto --intervals 1
 
 echo -ne '\033[1mStats:\033[0m '
 curl localhost:5556/stats 2>/dev/null
