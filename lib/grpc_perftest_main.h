@@ -1,3 +1,5 @@
+#include <csignal>
+
 #include "current/utils/grpc_perftest.h"
 
 DECLARE_string(grpc_server);
@@ -25,12 +27,16 @@ int DoMain() {
   return 0;
 }
 
+void HandleSignal(int code) {
+  std::cerr << "\nReceived signal " << code << ", terminating.\n";
+  std::exit(code);
+}
+
 int main(int argc, char** argv) {
+  signal(SIGINT, HandleSignal);
   ParseDFlags(&argc, &argv);
 
-#ifdef NDEBUG
-  std::cout << "Running an NDEBUG build!" << std::endl;
-#else
+#ifndef NDEBUG
   std::cout << "Running a DEBUG build!" << std::endl;
 #endif
 
