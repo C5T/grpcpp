@@ -67,12 +67,14 @@ if [ "$GRPC_TRACE" != "" ] || [ "$GRPC_VERBOSITY" != "" ] ; then
   echo "GRPC_VERBOSITY=$GRPC_VERBOSITY"
 fi
 
-echo
-echo -e '\033[1m\033[36m=== RUN ===\033[0m'
-echo
+if [ "$GRPCPP_ONLY_BUILD" == "" ] ; then
+  echo
+  echo -e '\033[1m\033[36m=== RUN ===\033[0m'
+  echo
 
-# TODO(dkorolev): A better name?
-(cd /src; /build_$MAKE_TARGET/___binary___ $*)
+  # TODO(dkorolev): A better name?
+  (cd /src; /build_$MAKE_TARGET/___binary___ $*)
+fi
 
 echo
 echo -e '\033[1m\033[36m=== DONE ===\033[0m'
