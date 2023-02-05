@@ -49,6 +49,15 @@ if [ "$1" == "--" ] ; then
 fi
 
 # TODO(dkorolev): There is no `--network host` on a Mac, fix the command.
-echo docker run -e CMAKE_BUILD_TYPE -e GRPC_TRACE -e GRPC_VERBOSITY --network host -u $(id -u):$(id -g) $MOUNT_VOLUMES_FLAGS $DOCKER_RUN_PARAMS $DOCKER_CONTAINER $* >"$PWD/.build_${TARGET}_${SRC}"/go.sh
+cat <<EOF >"$PWD/.build_${TARGET}_${SRC}"/go.sh
+  docker run \
+    -e GRPCPP_ONLY_BUILD \
+    -e CMAKE_BUILD_TYPE \
+    -e GRPC_TRACE \
+    -e GRPC_VERBOSITY \
+    --network host \
+    -u $(id -u):$(id -g) $MOUNT_VOLUMES_FLAGS $DOCKER_RUN_PARAMS $DOCKER_CONTAINER $*
+EOF
+
 chmod +x "$PWD/.build_${TARGET}_${SRC}"/go.sh
 "$PWD/.build_${TARGET}_${SRC}"/go.sh
