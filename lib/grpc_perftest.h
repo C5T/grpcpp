@@ -330,4 +330,7 @@ void RunTest(std::string const& server_path, TestConfig const config = TestConfi
       std::cout << "  Has test errors: " << total_fail << " of " << (total_pass + total_fail) << std::endl;
     }
   }
+
+  // TODO(dkorolev): SFINAE magic to not require this handler.
+  TEST::TearDown();
 }
