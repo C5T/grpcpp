@@ -24,6 +24,7 @@ set(PROTOC $<TARGET_FILE:protobuf::protoc>)
 
 set(GRPC_PROTO_DEPS "")
 
+file(WRITE "/all_srcs/___dummy___.proto" "syntax = \"proto3\";")
 file(GLOB_RECURSE PROTO_FILES "/all_srcs/*.proto")
 foreach(PROTO_FILE ${PROTO_FILES})
   get_filename_component(PROTO_NAME "${PROTO_FILE}" NAME_WE)
@@ -52,6 +53,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 # TODO(dkorolev): Why copy files at all, if I could `GLOB` them from where they are?
 
+file(WRITE "/all_srcs/___dummy___.cc" "// Dummy source file.")
 set(OBJECTS_LIST "")
 file(GLOB_RECURSE SOURCE_FILES "/all_srcs/src/*.cc" "/extra/*.cc")
 foreach(SOURCE_FILE ${SOURCE_FILES})
