@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  # NOTE(dkorolev): Terminal output is bleak in this test, but here's the way to observe its progress:
+  # docker exec -it grpcpp_bidi_server curl localhost:5556/stats
+  bidi_server:
+    container_name: grpcpp_bidi_server
+    build:
+      dockerfile: DockerfileServer
+  bidi_perftest:
+    container_name: grpcpp_bidi_perftest
+    build:
+      dockerfile: DockerfilePerftest
+    depends_on:
+      bidi_server:
+        condition: service_healthy

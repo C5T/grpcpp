@@ -6,11 +6,13 @@
 #include "current/bricks/dflags/dflags.h"
 #include "current/blocks/xterm/vt100.h"
 #include "current/blocks/xterm/progress.h"
+#include "current/blocks/http/api.h"
 #include "schema.grpc.pb.h"
 
-DEFINE_string(server, "localhost:50051", "The server to connect to.");
+DEFINE_string(grpc_server, "localhost:5555", "The server to connect to.");
 DEFINE_uint64(base_id, 1000000001, "The base to increment message IDs from.");
 DEFINE_uint64(n, 100'000u, "The number of messages to send.");
+DEFINE_string(kill_url, "", "Set to issue an HTTP 'kill' request after the test.");
 
 using namespace current::vt100;
 
@@ -26,7 +28,7 @@ int main(int argc, char** argv) {
 
   ParseDFlags(&argc, &argv);
 
-  std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel(FLAGS_server, grpc::InsecureChannelCredentials());
+  std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel(FLAGS_grpc_server, grpc::InsecureChannelCredentials());
   std::unique_ptr<test_bidi_stream::RPCBidiStream::Stub> stub(test_bidi_stream::RPCBidiStream::NewStub(channel));
 
   grpc::ClientContext context;
@@ -91,5 +93,9 @@ int main(int argc, char** argv) {
     uint64_t const n = (index_t1 - index_t0);
     int64_t us = (timestamp_t1 - timestamp_t0).count();
     std::cout << "QPS: " << bold << blue << n * 1e6 / us << reset << std::endl;
+  }
+
+  if (!FLAGS_kill_url.empty()) {
+    HTTP(DELETE(FLAGS_kill_url));
   }
 }
