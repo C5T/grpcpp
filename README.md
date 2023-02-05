@@ -2,9 +2,19 @@
 
 Build and run C++ gRPC code with a one-liner under Docker.
 
+**TODO(dkorolev)**: Actually put together a Docker-first use case!
+
 ## TL;DR
 
 Using C++ with gRPC and protobuf can be tricky. Let's make it trivial, lightning-fast, and reproducible.
+
+## Elevator Pitch
+
+Enabled by `grpcpp`, C++ becomes a scripting language for all intents and purposes. 
+
+This "scripting C++" includes full gRPC support, as well as the `current` framework, out of the box. With fast, incremental, fully optimized builds.
+
+Synopsis: `grpcpp <dir_with_cc_source> [<more_dirs>] [flags]`. Enabled by `alias grpcpp=...` as descibed below.
 
 ## Objective
 

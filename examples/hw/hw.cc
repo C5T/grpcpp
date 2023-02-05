@@ -1,5 +1,9 @@
 #include <iostream>
 
 int main() {
-  std::cout << "Hello, World!" << std::endl;
+#ifdef NDEBUG
+  std::cout << "Hello, World, from an NDEBUG build!" << std::endl;
+#else
+  std::cout << "Hello, World, from a DEBUG build!" << std::endl;
+#endif
 }

@@ -1,0 +1,1 @@
+This is the contents of the "outer" `foo.txt`, from 'examples/subdir/with spaces', that is at the same level as `examples/dirs`.

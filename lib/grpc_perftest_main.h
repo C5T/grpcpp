@@ -27,5 +27,12 @@ int DoMain() {
 
 int main(int argc, char** argv) {
   ParseDFlags(&argc, &argv);
+
+#ifdef NDEBUG
+  std::cout << "Running an NDEBUG build!" << std::endl;
+#else
+  std::cout << "Running a DEBUG build!" << std::endl;
+#endif
+
   return DoMain<true>();
 }

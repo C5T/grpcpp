@@ -2,8 +2,8 @@
 
 .PHONY: debug release debug_dir release_dir clean
 
-DEBUG_BUILD_DIR=$(shell echo "$${GRPC_PLAYGROUND_DEBUG_BUILD_DIR:-Debug}")
-RELEASE_BUILD_DIR=$(shell echo "$${GRPC_PLAYGROUND_RELEASE_BUILD_DIR:-Release}")
+DEBUG_BUILD_DIR=/build_debug
+RELEASE_BUILD_DIR=/build_release
 
 NINJA=$(shell ninja --version 2>&1 >/dev/null && echo YES || echo NO)
 ifeq ($(NINJA),YES)
@@ -33,8 +33,8 @@ debug: debug_dir
 debug_dir: ${DEBUG_BUILD_DIR}/.configure_succeeded
 
 ${DEBUG_BUILD_DIR}/.configure_succeeded: CMakeLists.txt
-	$(CMAKE_CONFIGURE_COMMAND) $(CMAKE_CONFIGURE_OPTIONS) -B "${DEBUG_BUILD_DIR}" .
-	touch "${DEBUG_BUILD_DIR}/.configure_succeeded"
+	$(CMAKE_CONFIGURE_COMMAND) -DCMAKE_BUILD_TYPE=Debug $(CMAKE_CONFIGURE_OPTIONS) -B "${DEBUG_BUILD_DIR}" .
+	touch "${DEBUG_BUILD_DIR}/.configure_succeeded" 2>/dev/null
 
 release: release_dir
 	@${CMAKE_BUILD_COMMAND} "${RELEASE_BUILD_DIR}" -j ${CORES}
@@ -43,7 +43,7 @@ release_dir: ${RELEASE_BUILD_DIR}/.configure_succeeded
 
 ${RELEASE_BUILD_DIR}/.configure_succeeded: CMakeLists.txt
 	@$(CMAKE_CONFIGURE_COMMAND) -DCMAKE_BUILD_TYPE=Release $(CMAKE_CONFIGURE_OPTIONS) -B "${RELEASE_BUILD_DIR}" .
-	@touch "${RELEASE_BUILD_DIR}/.configure_succeeded"
+	touch "${RELEASE_BUILD_DIR}/.configure_succeeded" 2>/dev/null
 
 clean:
 	rm -rf "${DEBUG_BUILD_DIR}" "${RELEASE_BUILD_DIR}"
