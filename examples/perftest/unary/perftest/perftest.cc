@@ -1,6 +1,5 @@
-#include "current/utils/grpc_perftest_main.h"
 #include "current/blocks/http/api.h"
-
+#include "current/utils/grpc_perftest_main.h"
 #include "schema.grpc.pb.h"
 
 DEFINE_string(grpc_server, "localhost:5555", "The server to perftest.");

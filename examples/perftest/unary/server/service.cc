@@ -1,10 +1,10 @@
 #include <atomic>
 #include <csignal>
 
-#include "grpcpp/grpcpp.h"
+#include "current/blocks/http/api.h"
 #include "current/bricks/dflags/dflags.h"
 #include "current/bricks/sync/waitable_atomic.h"
-#include "current/blocks/http/api.h"
+#include "grpcpp/grpcpp.h"
 #include "schema.grpc.pb.h"
 
 DEFINE_uint16(server, 5555, "The port to listen on.");
@@ -61,9 +61,13 @@ int main(int argc, char** argv) {
     });
     routes += http.Register("/kill", [&](Request r) {
       r("Terminating.\n");
-      kill_switch.MutableUse([](bool& flag) { flag = true; });
+      kill_switch.MutableUse([](bool& flag) {
+        flag = true;
+      });
     });
     std::cout << "The HTTP service is up on port " << FLAGS_http_server << ", /kill to stop." << std::endl;
-    kill_switch.Wait([](bool flag) { return flag; });
+    kill_switch.Wait([](bool flag) {
+      return flag;
+    });
   }
 }

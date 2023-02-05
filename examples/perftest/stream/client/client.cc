@@ -1,8 +1,8 @@
 #include <atomic>
 #include <thread>
 
-#include "grpcpp/grpcpp.h"
 #include "current/bricks/dflags/dflags.h"
+#include "grpcpp/grpcpp.h"
 #include "schema.grpc.pb.h"
 
 DEFINE_string(server, "localhost:5555", "The server to connect to.");

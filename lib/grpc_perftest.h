@@ -7,7 +7,6 @@
 #include "current/bricks/dflags/dflags.h"
 #include "current/bricks/time/chrono.h"
 #include "current/typesystem/serialization/json.h"
-
 #include "grpcpp/grpcpp.h"
 
 using namespace current::vt100;
@@ -112,7 +111,8 @@ void RunTest(std::string const& server_path, TestConfig const config = TestConfi
 
     Entry() = default;
     Entry(typename TEST::GRPCRequest req, typename TEST::GoldenResponse golden)
-        : req(std::move(req)), golden(std::move(golden)) {}
+        : req(std::move(req)), golden(std::move(golden)) {
+    }
   };
 
   std::cout << "Preparing test data ..." << std::flush;
@@ -284,12 +284,16 @@ void RunTest(std::string const& server_path, TestConfig const config = TestConfi
     double const qps_95p = qps_stddev * 1.96;
     std::string const qps_95p_as_string = Round(
         qps_95p,
-        [qps_95p](double x) { return x && qps_95p && (std::max(x, qps_95p) / std::min(x, qps_95p)) < 1.037; },
+        [qps_95p](double x) {
+          return x && qps_95p && (std::max(x, qps_95p) / std::min(x, qps_95p)) < 1.037;
+        },
         RoundType::Up);
     double const qps_95p_rounded = current::FromString<double>(qps_95p_as_string);
     std::string const qps_mean_as_string = Round(
         qps_mean,
-        [qps_mean, qps_95p_rounded](double x) { return (qps_mean - x) / qps_95p_rounded < 1.0037; },
+        [qps_mean, qps_95p_rounded](double x) {
+          return (qps_mean - x) / qps_95p_rounded < 1.0037;
+        },
         RoundType::Down);
     std::cout << "  QPS over " << config.subintervals << " subintervals: " << green << bold << qps_mean_as_string
               << " ± " << qps_95p_as_string << reset << '.' << std::endl;

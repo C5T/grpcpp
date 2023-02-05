@@ -1,12 +1,12 @@
 #include <atomic>
-#include <thread>
 #include <chrono>
+#include <thread>
 
-#include "grpcpp/grpcpp.h"
-#include "current/bricks/dflags/dflags.h"
-#include "current/blocks/xterm/vt100.h"
-#include "current/blocks/xterm/progress.h"
 #include "current/blocks/http/api.h"
+#include "current/blocks/xterm/progress.h"
+#include "current/blocks/xterm/vt100.h"
+#include "current/bricks/dflags/dflags.h"
+#include "grpcpp/grpcpp.h"
 #include "schema.grpc.pb.h"
 
 DEFINE_string(grpc_server, "localhost:5555", "The server to connect to.");
