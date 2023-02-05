@@ -1,8 +1,11 @@
 #include "current/utils/grpc_perftest_main.h"
+#include "current/blocks/http/api.h"
+
 #include "schema.grpc.pb.h"
 
 DEFINE_string(grpc_server, "localhost:5555", "The server to perftest.");
 DEFINE_uint64(queries_to_generate, 1'000'000, "The number of mock queries to generate.");
+DEFINE_string(kill_url, "", "Set to issue an HTTP 'kill' request after the test.");
 
 struct TestRunner final {
   using GRPCRequest = sync_service::Req;
@@ -31,5 +34,11 @@ struct TestRunner final {
                           GRPCRequest const& req,
                           GRPCResponse* res) {
     return stub.SyncCall(ctx, req, res);
+  }
+
+  static void TearDown() {
+    if (!FLAGS_kill_url.empty()) {
+      HTTP(DELETE(FLAGS_kill_url));
+    }
   }
 };
