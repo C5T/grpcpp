@@ -13,14 +13,14 @@ RUN git clone --depth 1 -b stable_2022_04_10 https://github.com/c5t/current
 RUN mkdir /grpc_build_debug
 RUN (cd /grpc_build_debug; cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/grpc_installed_debug -DCMAKE_BUILD_TYPE=Debug /grpc_src)
 
-RUN (cd /grpc_build_debug; make -j 20)  # NOTE(dkorolev): This `-j` argument can be tweaked, TODO(dkorolev): externally?
+RUN (cd /grpc_build_debug; make)
 RUN (cd /grpc_build_debug; make install)
 
 # Build Release gRPC.
 RUN mkdir /grpc_build_release
 RUN (cd /grpc_build_release; cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/grpc_installed_release -DCMAKE_BUILD_TYPE=Release /grpc_src)
 
-RUN (cd /grpc_build_release; make -j 20)  # NOTE(dkorolev): This `-j` argument can be tweaked, TODO(dkorolev): externally?
+RUN (cd /grpc_build_release; make)
 RUN (cd /grpc_build_release; make install)
 
 # TODO(dkorolev): Clean up these hacky scripts.
