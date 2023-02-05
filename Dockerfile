@@ -25,7 +25,6 @@ RUN (cd /grpc_build_release; make install)
 
 # TODO(dkorolev): Clean up these hacky scripts.
 COPY CMakeLists.txt /
-COPY Makefile /
 COPY entrypoint.sh /
 COPY lib/grpc_perftest.h /current/utils/
 COPY lib/grpc_perftest_main.h /current/utils/

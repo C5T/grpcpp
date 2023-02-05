@@ -29,10 +29,12 @@ cp -r -p /extra /all_srcs/___extra___ 2>/dev/null
 
 if [ "$CMAKE_BUILD_TYPE" == "" ] || [ "$CMAKE_BUILD_TYPE" == "Release" ] ; then
   MAKE_TARGET="release"
-  export GRPC_INSTALL_DIR=/grpc_installed_release
+  MAKE_TARGET_CAMEL_CASE="Release"
+  GRPC_INSTALL_DIR=/grpc_installed_release
 elif [ "$CMAKE_BUILD_TYPE" == "Debug" ] ; then
   MAKE_TARGET="debug"
-  export GRPC_INSTALL_DIR=/grpc_installed_debug
+  MAKE_TARGET_CAMEL_CASE="Debug"
+  GRPC_INSTALL_DIR=/grpc_installed_debug
 else
   echo '"$CMAKE_BUILD_TYPE" should be unset, `Debug` or `Release`.'
   exit 1
@@ -42,13 +44,21 @@ mkdir -p /build_$MAKE_TARGET
 
 echo -e '\033[1m\033[36m=== CONFIGURE ===\033[0m'
 echo
-make --always-make /build_$MAKE_TARGET/.configure_succeeded || exit 1
+
+cmake -DCMAKE_PREFIX_PATH="$GRPC_INSTALL_DIR" -DCMAKE_BUILD_TYPE=$MAKE_TARGET_CAMEL_CASE -G Ninja -B /build_${MAKE_TARGET} || exit 1
 
 echo
 echo -e '\033[1m\033[36m=== BUILD ===\033[0m'
 echo
 
-make $MAKE_TARGET || exit 1
+# NOTE(dkorolev): This is redundant, as the script is only run from within a Docker container.
+if [ "$(uname)" == "Darwin" ] ; then
+  CORES=$(sysctl -n hw.physicalcpu)
+else
+  CORES=$(nproc)
+fi
+
+cmake --build /build_${MAKE_TARGET} -j $CORES
 
 if [ "$GRPC_TRACE" != "" ] || [ "$GRPC_VERBOSITY" != "" ] ; then
   echo -e '\033[1m\033[36m=== GRPC DEBUG ===\033[0m'
