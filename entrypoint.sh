@@ -58,7 +58,7 @@ else
   CORES=$(nproc)
 fi
 
-cmake --build /build_${MAKE_TARGET} -j $CORES
+cmake --build /build_${MAKE_TARGET} -j $CORES || exit 1
 
 if [ "$GRPC_TRACE" != "" ] || [ "$GRPC_VERBOSITY" != "" ] ; then
   echo -e '\033[1m\033[36m=== GRPC DEBUG ===\033[0m'
