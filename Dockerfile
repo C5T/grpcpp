@@ -7,7 +7,7 @@ RUN apt-get install -y build-essential git cmake ninja-build gnuplot graphviz
 RUN git clone --depth 1 --recursive --shallow-submodules -b v1.47.3 https://github.com/grpc/grpc.git grpc_src
 
 # Make `current` available.
-RUN git clone --depth 1 -b stable_2022_04_10 https://github.com/c5t/current
+RUN git clone --depth 1 -b stable_2023_02_11 https://github.com/c5t/current
 
 # Build Debug gRPC.
 RUN mkdir /grpc_build_debug
